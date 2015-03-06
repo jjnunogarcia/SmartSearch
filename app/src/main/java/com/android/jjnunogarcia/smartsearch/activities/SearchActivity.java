@@ -1,72 +1,158 @@
 package com.android.jjnunogarcia.smartsearch.activities;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.SearchView;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.*;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import com.android.jjnunogarcia.smartsearch.CustomAutoCompleteTextView;
 import com.android.jjnunogarcia.smartsearch.R;
+import com.android.jjnunogarcia.smartsearch.SmartSearchApplication;
+import com.android.jjnunogarcia.smartsearch.adapters.ProductArrayAdapter;
 import com.android.jjnunogarcia.smartsearch.backend.BackendEndPoint;
 import com.android.jjnunogarcia.smartsearch.backend.requests.GetProductsTask;
 import com.android.jjnunogarcia.smartsearch.eventbus.GetProductsTaskResultEvent;
+import com.android.jjnunogarcia.smartsearch.helpers.PicassoUrlCallback;
+import com.android.jjnunogarcia.smartsearch.model.jsonparsing.Product;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 import de.greenrobot.event.EventBus;
 
+import java.util.ArrayList;
 
-public class SearchActivity extends ActionBarActivity {
+
+public class SearchActivity extends ActionBarActivity implements TextWatcher, TextView.OnEditorActionListener, AdapterView.OnItemClickListener {
+
+  @InjectView(R.id.activity_search_toolbar)
+  Toolbar                    toolbar;
+  @InjectView(R.id.activity_search_toolbar_autocomplete_text_view)
+  CustomAutoCompleteTextView searchTextView;
+  @InjectView(R.id.activity_search_toolbar_autocomplete_progress_bar)
+  ProgressBar                searchProgressBar;
+  @InjectView(R.id.activity_search_location_container)
+  LinearLayout               locationContainer;
+  @InjectView(R.id.activity_search_location_text_view)
+  TextView                   locationText;
+  @InjectView(R.id.activity_search_details_container)
+  LinearLayout               detailsContainer;
+  @InjectView(R.id.activity_search_details_name_text_view)
+  TextView                   detailsNameText;
+  @InjectView(R.id.activity_search_details_name_image_view)
+  ImageView                  detailsImage;
+  @InjectView(R.id.activity_search_details_name_image_view_progress_bar)
+  ProgressBar                detailsImageProgressBar;
+  @InjectView(R.id.activity_search_details_location_text_view)
+  TextView                   detailsLocationText;
+
+  private ProductArrayAdapter productArrayAdapter;
+  private ArrayList<Product>  products;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_search);
-
-    BackendEndPoint.getProductsTask(getApplicationContext());
+    ButterKnife.inject(this);
+    setSupportActionBar(toolbar);
+    products = new ArrayList<>();
+    searchTextView.addTextChangedListener(this);
+    searchTextView.setOnEditorActionListener(this);
+    searchTextView.setOnItemClickListener(this);
+    searchTextView.setThreshold(1);
+    productArrayAdapter = new ProductArrayAdapter(getApplicationContext(), new ArrayList<Product>());
+    searchTextView.setAdapter(productArrayAdapter);
   }
 
+  public void onEvent(GetProductsTaskResultEvent getProductsTaskResultEvent) {
+    searchProgressBar.setVisibility(View.INVISIBLE);
+    if (getProductsTaskResultEvent.getServerResponse() == GetProductsTask.SERVER_SUCCESS) {
+      products = getProductsTaskResultEvent.getProductsResponse().getProducts();
+      productArrayAdapter.setContent(products);
+      productArrayAdapter.getFilter().filter(searchTextView.getText().toString().trim());
+    } else {
+      Toast.makeText(getApplicationContext(), getString(R.string.activity_search_get_products_error), Toast.LENGTH_SHORT).show();
+    }
+  }
+
+  private void displayLocationCount() {
+    locationContainer.setVisibility(View.VISIBLE);
+    int count = 0;
+
+    for (Product product : productArrayAdapter.getSuggestions()) {
+      count += product.getLocations().size();
+    }
+
+    locationText.setText(String.format(getString(R.string.activity_search_location_text_view), count));
+  }
+
+  private void displayDetailsLocationCount(Product product) {
+    detailsContainer.setVisibility(View.VISIBLE);
+    detailsLocationText.setText(String.format(getString(R.string.activity_search_details_location_text_view), product.getLocations().size()));
+  }
 
   @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    MenuInflater menuInflater = getMenuInflater();
-    menuInflater.inflate(R.menu.menu_search, menu);
+  public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
-    MenuItem searchItem = menu.findItem(R.id.activity_search_menu_search);
+  @Override
+  public void onTextChanged(CharSequence s, int start, int before, int count) {
+    locationContainer.setVisibility(View.GONE);
+    detailsContainer.setVisibility(View.GONE);
 
-    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-
-    SearchView searchView = null;
-    if (searchItem != null) {
-      searchView = (SearchView) searchItem.getActionView();
-    }
-    if (searchView != null) {
-      searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-    }
-    return super.onCreateOptionsMenu(menu);
-  }
-  
-  public void onEvent(GetProductsTaskResultEvent getProductsTaskResultEvent) {
-    if (getProductsTaskResultEvent.getServerResponse() == GetProductsTask.SERVER_SUCCESS) {
-
+    if (s.length() > 0 && before == 0) { // Call endpoint only if user is adding more text, not deleting
+      searchProgressBar.setVisibility(View.VISIBLE);
+      productArrayAdapter.clear();
+      BackendEndPoint.getProductsTask(getApplicationContext());
     } else {
-      
+      productArrayAdapter.getFilter().filter(searchTextView.getText().toString().trim());
     }
   }
 
-//  @Override
-//  public boolean onOptionsItemSelected(MenuItem item) {
-//    // Handle action bar item clicks here. The action bar will
-//    // automatically handle clicks on the Home/Up button, so long
-//    // as you specify a parent activity in AndroidManifest.xml.
-//    int id = item.getItemId();
-//
-//    //noinspection SimplifiableIfStatement
-//    if (id == R.id.activity_search_menu_search) {
-//      return true;
-//    }
-//
-//    return super.onOptionsItemSelected(item);
-//  }
+  @Override
+  public void afterTextChanged(Editable s) {}
+
+  @Override
+  public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+    if (textView.getId() == R.id.activity_search_toolbar_autocomplete_text_view && (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_NULL)) {
+      searchTextView.dismissDropDown();
+      hideKeyboard();
+      displayLocationCount();
+      return true;
+    }
+
+    return false;
+  }
+
+  @Override
+  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    searchTextView.dismissDropDown();
+    setItemDetails(productArrayAdapter.getItem(position));
+  }
+
+  private void setItemDetails(Product product) {
+    if (product.getImages() != null && !product.getImages().isEmpty()) {
+      Picasso picasso = ((SmartSearchApplication) getApplication()).getPicasso();
+      Callback picassoCallback = new PicassoUrlCallback(detailsImage, detailsImageProgressBar);
+      String imageUrl = product.getImages().get(0).getImage();
+      int imageSize = (int) getResources().getDimension(R.dimen.activity_search_details_image_size);
+      picasso.load(imageUrl).resize(imageSize, imageSize).centerInside().into(detailsImage, picassoCallback);
+    }
+
+    detailsNameText.setText(product.getName());
+    displayDetailsLocationCount(product);
+  }
+
+  private void hideKeyboard() {
+    searchTextView.clearFocus();
+    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+    imm.hideSoftInputFromWindow(searchTextView.getWindowToken(), 0);
+  }
 
   @Override
   protected void onResume() {

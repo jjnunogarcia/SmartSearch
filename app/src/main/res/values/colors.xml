@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="smart_search_color">#ff52ac56</color>
+    <color name="smart_search_color_dark">#ff448744</color>
+    <color name="smart_search_color_accent">#ffffbb33</color>
+    <color name="white">#ffffffff</color>
+    <color name="white_transparent">#88ffffff</color>
+    <color name="light_grey_background">#ffefefef</color>
+    <color name="grey_normal">#ffdddddd</color>
+    <color name="text_grey">#ff6f6f6f</color>
+</resources>

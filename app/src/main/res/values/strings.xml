@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">SmartSearch</string>
+    <string name="activity_search_get_products_error">Error retrieving products</string>
+    <string name="activity_search_text_box_hint">Enter product</string>
+    <string name="activity_search_keyboard_button">Count</string>
+    <string name="activity_search_location_text_view">Search available in %s locations</string>
+    <string name="activity_search_details_location_text_view">Available in %s locations</string>
 </resources>

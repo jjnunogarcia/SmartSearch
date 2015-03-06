@@ -14,15 +14,15 @@ import java.util.ArrayList;
  */
 public class OfferDetail implements Parcelable {
   @SerializedName("geohash")
-  private String              geoHash;
+  private String                      geoHash;
   @SerializedName("min_price")
-  private float               minPrice;
+  private float                       minPrice;
   @SerializedName("max_price")
-  private float               maxPrice;
+  private float                       maxPrice;
   @SerializedName("offers_in_range")
-  private int                 offersInRange;
+  private int                         offersInRange;
   @SerializedName("offer_locations")
-  private ArrayList<Location> offerLocations;
+  private ArrayList<ArrayList<Float>> offerLocations;
 
   public static final Creator<OfferDetail> CREATOR;
 
@@ -61,7 +61,7 @@ public class OfferDetail implements Parcelable {
     dest.writeFloat(minPrice);
     dest.writeFloat(maxPrice);
     dest.writeInt(offersInRange);
-    dest.writeTypedList(offerLocations);
+    dest.writeList(offerLocations);
   }
 
   private void readFromParcel(Parcel source) {
@@ -69,7 +69,7 @@ public class OfferDetail implements Parcelable {
     minPrice = source.readFloat();
     maxPrice = source.readFloat();
     offersInRange = source.readInt();
-    source.readTypedList(offerLocations, Location.CREATOR);
+    source.readList(offerLocations, ArrayList.class.getClassLoader());
   }
 
   public String getGeoHash() {
@@ -104,11 +104,11 @@ public class OfferDetail implements Parcelable {
     this.offersInRange = offersInRange;
   }
 
-  public ArrayList<Location> getOfferLocations() {
+  public ArrayList<ArrayList<Float>> getOfferLocations() {
     return offerLocations;
   }
 
-  public void setOfferLocations(ArrayList<Location> offerLocations) {
+  public void setOfferLocations(ArrayList<ArrayList<Float>> offerLocations) {
     this.offerLocations = offerLocations;
   }
 }

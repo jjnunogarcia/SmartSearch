@@ -14,77 +14,77 @@ import java.util.ArrayList;
  */
 public class Product implements Parcelable {
   @SerializedName("_index")
-  private String                 _index;
+  private String                      _index;
   @SerializedName("_type")
-  private String                 _type;
+  private String                      _type;
   @SerializedName("_id")
-  private String                 _id;
+  private String                      _id;
   @SerializedName("_score")
-  private float                  _score;
+  private float                       _score;
   @SerializedName("indexable_name")
-  private String                 indexableName;
+  private String                      indexableName;
   @SerializedName("description")
-  private String                 description;
+  private String                      description;
   @SerializedName("relevant_counter")
-  private int                    relevantCounter;
+  private int                         relevantCounter;
   @SerializedName("min_price")
-  private MinPrice               minPrice;
+  private MinPrice                    minPrice;
   @SerializedName("max_price")
-  private String                 maxPrice;
+  private String                      maxPrice;
   @SerializedName("category_ids")
-  private ArrayList<String>      categoryIds;
+  private ArrayList<String>           categoryIds;
   @SerializedName("category_slugs")
-  private ArrayList<String>      categorySlugs;
-  @SerializedName("locations")
-  private ArrayList<Location>    locations;
+  private ArrayList<String>           categorySlugs;
+  @SerializedName("location")
+  private ArrayList<ArrayList<Float>> locations;
   @SerializedName("brand_name")
-  private String                 brandName;
+  private String                      brandName;
   @SerializedName("brand_slugs")
-  private ArrayList<String>      brandSlugs;
+  private ArrayList<String>           brandSlugs;
   @SerializedName("brand_name_slug")
-  private String                 brandNameSlug;
+  private String                      brandNameSlug;
   @SerializedName("visible_results")
-  private boolean                visibleResults;
+  private boolean                     visibleResults;
   @SerializedName("indexable_attrs")
-  private IndexableAttributes    indexableAttributes;
+  private IndexableAttributes         indexableAttributes;
   @SerializedName("top")
-  private boolean                top;
+  private boolean                     top;
   @SerializedName("offer_details")
-  private ArrayList<OfferDetail> offerDetails;
+  private ArrayList<OfferDetail>      offerDetails;
   @SerializedName("attributes")
-  private ArrayList<String>      attributes;
+  private ArrayList<String>           attributes;
   @SerializedName("name")
-  private String                 name;
+  private String                      name;
   @SerializedName("slug")
-  private String                 slug;
+  private String                      slug;
   @SerializedName("extended_description")
-  private String                 extendedDescription;
+  private String                      extendedDescription;
   @SerializedName("gtin")
-  private String                 gtin;
+  private String                      gtin;
   @SerializedName("gpc")
-  private int                    gpc;
+  private int                         gpc;
   @SerializedName("mpn")
-  private String                 mpn;
+  private String                      mpn;
   @SerializedName("ran")
-  private String                 ran;
+  private String                      ran;
   @SerializedName("active")
-  private boolean                active;
+  private boolean                     active;
   @SerializedName("brand")
-  private Brand                  brand;
+  private Brand                       brand;
   @SerializedName("manufacturer")
-  private Manufacturer           manufacturer;
+  private Manufacturer                manufacturer;
   @SerializedName("images")
-  private ArrayList<Image>       images;
+  private ArrayList<Image>            images;
   @SerializedName("attrs")
-  private ArrayList<Attr>        attrs;
+  private ArrayList<Attr>             attrs;
   @SerializedName("created_at")
-  private String                 createdAt;
+  private String                      createdAt;
   @SerializedName("updated_at")
-  private String                 updatedAt;
+  private String                      updatedAt;
   @SerializedName("id")
-  private String                 id;
+  private String                      id;
   @SerializedName("min_distance")
-  private float                  minDistance;
+  private float                       minDistance;
 
   public static final Creator<Product> CREATOR;
 
@@ -137,7 +137,7 @@ public class Product implements Parcelable {
     dest.writeString(maxPrice);
     dest.writeList(categoryIds);
     dest.writeList(categorySlugs);
-    dest.writeTypedList(locations);
+    dest.writeList(locations);
     dest.writeString(brandName);
     dest.writeList(brandSlugs);
     dest.writeString(brandNameSlug);
@@ -176,7 +176,7 @@ public class Product implements Parcelable {
     maxPrice = source.readString();
     source.readList(categoryIds, String.class.getClassLoader());
     source.readList(categorySlugs, String.class.getClassLoader());
-    source.readTypedList(locations, Location.CREATOR);
+    source.readList(locations, ArrayList.class.getClassLoader());
     brandName = source.readString();
     source.readList(brandSlugs, String.class.getClassLoader());
     brandNameSlug = source.readString();
@@ -291,11 +291,11 @@ public class Product implements Parcelable {
     this.categorySlugs = categorySlugs;
   }
 
-  public ArrayList<Location> getLocations() {
+  public ArrayList<ArrayList<Float>> getLocations() {
     return locations;
   }
 
-  public void setLocations(ArrayList<Location> locations) {
+  public void setLocations(ArrayList<ArrayList<Float>> locations) {
     this.locations = locations;
   }
 

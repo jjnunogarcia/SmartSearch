@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowAnimationStyle">@null</item>
+        <!--We will be using the toolbar so no need to show ActionBar-->
+        <item name="windowActionBar">false</item>
+        <!-- action bar background colour-->
+        <item name="colorPrimary">@color/smart_search_color</item>
+        <!-- action bar items text colour-->
+        <item name="actionMenuTextColor">@color/white</item>
+        <!-- action bar text colour -->
+        <item name="android:textColorPrimary">@color/white</item>
+        <!-- darker variant for the status bar and contextual app bars -->
+        <item name="colorPrimaryDark">@color/smart_search_color</item>
+        <!-- theme UI controls like checkboxes and text fields -->
+        <item name="colorAccent">@color/smart_search_color_accent</item>
+        <!-- general background -->
+        <item name="android:windowBackground">@color/light_grey_background</item>
+        <item name="colorControlNormal">@color/grey_normal</item>
+        <item name="colorControlActivated">@color/smart_search_color_accent</item>
+        <item name="colorControlHighlight">@color/smart_search_color_accent</item>
+        <item name="android:editTextStyle">@style/EditTextStyle</item>\
+        <item name="actionBarPopupTheme">@style/SmartSearchActionBarPopUp</item>
+    </style>
+
+</resources>
