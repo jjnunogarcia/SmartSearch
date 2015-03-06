@@ -138,7 +138,7 @@ public class SearchActivity extends ActionBarActivity implements TextWatcher, Te
   @Override
   public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
     if (textView.getId() == R.id.activity_search_toolbar_autocomplete_text_view && (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_NULL)) {
-      searchTextView.dismissDropDown();
+      dismissDropDown();
       hideKeyboard();
       displayLocationCount();
       return true;
@@ -149,7 +149,8 @@ public class SearchActivity extends ActionBarActivity implements TextWatcher, Te
 
   @Override
   public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    searchTextView.dismissDropDown();
+    dismissDropDown();
+    hideKeyboard();
     setItemDetails(productArrayAdapter.getItem(position));
   }
 
@@ -170,6 +171,15 @@ public class SearchActivity extends ActionBarActivity implements TextWatcher, Te
     searchTextView.clearFocus();
     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
     imm.hideSoftInputFromWindow(searchTextView.getWindowToken(), 0);
+  }
+
+  private void dismissDropDown() {
+    searchTextView.post(new Runnable() {
+      @Override
+      public void run() {
+        searchTextView.dismissDropDown();
+      }
+    });
   }
 
   @Override
