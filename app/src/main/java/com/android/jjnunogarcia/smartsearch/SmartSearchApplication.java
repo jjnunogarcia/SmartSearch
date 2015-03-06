@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
  * User: jesus
  * Date: 06/03/15
  *
- * @author j.nuno@klara.com
+ * @author jjnunogarcia@gmail.com
  */
 public class SmartSearchApplication extends Application {
   public static final String TAG = SmartSearchApplication.class.getSimpleName();

@@ -1,6 +1,7 @@
 package com.android.jjnunogarcia.smartsearch.activities;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,7 +14,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.android.jjnunogarcia.smartsearch.CustomAutoCompleteTextView;
 import com.android.jjnunogarcia.smartsearch.R;
 import com.android.jjnunogarcia.smartsearch.SmartSearchApplication;
 import com.android.jjnunogarcia.smartsearch.adapters.ProductArrayAdapter;
@@ -22,14 +22,22 @@ import com.android.jjnunogarcia.smartsearch.backend.requests.GetProductsTask;
 import com.android.jjnunogarcia.smartsearch.eventbus.GetProductsTaskResultEvent;
 import com.android.jjnunogarcia.smartsearch.helpers.PicassoUrlCallback;
 import com.android.jjnunogarcia.smartsearch.model.jsonparsing.Product;
+import com.android.jjnunogarcia.smartsearch.views.CustomAutoCompleteTextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import de.greenrobot.event.EventBus;
 
 import java.util.ArrayList;
 
-
+/**
+ * User: jesus
+ * Date: 06/03/15
+ *
+ * @author jjnunogarcia@gmail.com
+ */
 public class SearchActivity extends ActionBarActivity implements TextWatcher, TextView.OnEditorActionListener, AdapterView.OnItemClickListener {
+  public static final String TAG  = SearchActivity.class.getSimpleName();
+  public static final String FONT = "fonts/DroidSerif-Regular.ttf";
 
   @InjectView(R.id.activity_search_toolbar)
   Toolbar                    toolbar;
@@ -61,6 +69,8 @@ public class SearchActivity extends ActionBarActivity implements TextWatcher, Te
     setContentView(R.layout.activity_search);
     ButterKnife.inject(this);
     setSupportActionBar(toolbar);
+    setFonts();
+
     products = new ArrayList<>();
     searchTextView.addTextChangedListener(this);
     searchTextView.setOnEditorActionListener(this);
@@ -68,6 +78,14 @@ public class SearchActivity extends ActionBarActivity implements TextWatcher, Te
     searchTextView.setThreshold(1);
     productArrayAdapter = new ProductArrayAdapter(getApplicationContext(), new ArrayList<Product>());
     searchTextView.setAdapter(productArrayAdapter);
+  }
+
+  private void setFonts() {
+    Typeface typeface = Typeface.createFromAsset(getAssets(), FONT);
+    searchTextView.setTypeface(typeface);
+    locationText.setTypeface(typeface);
+    detailsNameText.setTypeface(typeface);
+    detailsLocationText.setTypeface(typeface);
   }
 
   public void onEvent(GetProductsTaskResultEvent getProductsTaskResultEvent) {

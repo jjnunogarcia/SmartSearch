@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <com.android.jjnunogarcia.smartsearch.CustomAutoCompleteTextView
+            <com.android.jjnunogarcia.smartsearch.views.CustomAutoCompleteTextView
                 style="@style/EditTextStyle"
                 android:id="@+id/activity_search_toolbar_autocomplete_text_view"
                 android:layout_width="0dp"
@@ -108,6 +108,7 @@
             android:id="@+id/activity_search_details_location_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:textColor="@color/text_grey"

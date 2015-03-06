@@ -19,7 +19,7 @@ import java.util.List;
  * User: jesus
  * Date: 05/03/15
  *
- * @author j.nuno@klara.com
+ * @author jjnunogarcia@gmail.com
  */
 public class ProductArrayAdapter extends BaseAdapter implements Filterable {
   private final String TAG = ProductArrayAdapter.class.getSimpleName();

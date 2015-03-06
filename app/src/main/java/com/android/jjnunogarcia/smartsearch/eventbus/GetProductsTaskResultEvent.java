@@ -4,7 +4,7 @@ import com.android.jjnunogarcia.smartsearch.model.jsonparsing.ProductsResponse;
 
 /**
  * User: jesus
- * Date: 25/02/15
+ * Date: 06/03/15
  *
  * @author jjnunogarcia@gmail.com
  */

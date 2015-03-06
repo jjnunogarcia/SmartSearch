@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * User: jesus
  * Date: 05/03/15
  *
- * @author j.nuno@klara.com
+ * @author jjnunogarcia@gmail.com
  */
 public class NavigationTree implements Parcelable {
   @SerializedName("path")

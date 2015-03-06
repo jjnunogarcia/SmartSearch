@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  * User: jesus
  * Date: 05/03/15
  *
- * @author j.nuno@klara.com
+ * @author jjnunogarcia@gmail.com
  */
 public class Facets implements Parcelable {
   @SerializedName("brand_name_slug")

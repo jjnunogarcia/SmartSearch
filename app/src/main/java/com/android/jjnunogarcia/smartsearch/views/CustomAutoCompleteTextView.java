@@ -1,4 +1,4 @@
-package com.android.jjnunogarcia.smartsearch;
+package com.android.jjnunogarcia.smartsearch.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -8,7 +8,7 @@ import android.widget.AutoCompleteTextView;
  * User: jesus
  * Date: 06/03/15
  *
- * @author j.nuno@klara.com
+ * @author jjnunogarcia@gmail.com
  */
 public class CustomAutoCompleteTextView extends AutoCompleteTextView {
   public CustomAutoCompleteTextView(Context context) {

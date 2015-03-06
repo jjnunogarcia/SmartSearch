@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * User: jesus
  * Date: 05/03/15
  *
- * @author j.nuno@klara.com
+ * @author jjnunogarcia@gmail.com
  */
 public class Filters implements Parcelable {
   private Object object;

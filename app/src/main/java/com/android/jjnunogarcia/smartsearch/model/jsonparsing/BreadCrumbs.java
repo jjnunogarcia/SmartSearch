@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * User: jesus
  * Date: 05/03/15
  *
- * @author j.nuno@klara.com
+ * @author jjnunogarcia@gmail.com
  */
 public class BreadCrumbs implements Parcelable {
   private ArrayList<Object> objects;
